@@ -1,0 +1,31 @@
+{
+  "name": "Graph Blarg",
+  "nodeTypes": [
+    {
+      "id": 1,
+      "name": "TYPE 1"
+    }
+  ],
+  "nodes": [
+    {
+      "id": 1,
+      "name": "TASK t0_0",
+      "typeId": 1
+    }
+  ],
+  "edgeTypes": [
+    {
+      "id": 1,
+      "name": "TYPE 1"
+    }
+  ],
+  "edges": [
+    {
+      "id": 1,
+      "name": "ARC a0_0",
+      "typeId": 1,
+      "from": 1,
+      "to": 3
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "graphs": [
+    {
+      "id": "graph 1",
+      "label": "omgLabel",
+      "directed": false,
+      "type": "somType",
+      "metadata": {},
+      "nodes": {
+        "nodeIdBlarg0": {
+          "label": "",
+          "metadata": {
+            "single0n1": "jorp",
+            "single1n1": "florp"
+          }
+        }
+      },
+      "edges": [
+        {
+          "id": "",
+          "source": "",
+          "target": "",
+          "relation": "",
+          "directed": true,
+          "label": "",
+          "metadata": {
+            "single0e1": "gnorp",
+            "single1e1": "skorp"
+          }
+        }
+      ]
+    },
+    {
+      "id": "graph 2",
+      "metadata": {
+        "mutliG0": "jorp",
+        "mutliG1": "florp"
+      },
+      "nodes": {
+        "nodeIdBlarg1": {
+          "label": "",
+          "metadata": {
+            "single0n2": "jorp",
+            "single1n2": "florp"
+          }
+        }
+      },
+      "edges": [
+        {
+          "id": "",
+          "source": "",
+          "target": "",
+          "relation": "",
+          "directed": true,
+          "label": "",
+          "metadata": {
+            "single0e2": "gnorp",
+            "single1e2": "skorp"
+          }
+        }
+      ]
+    }
+  ]
+}

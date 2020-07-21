@@ -1,0 +1,14 @@
+# Ignore depedencies.
+lib/*
+
+# Ignore build.
+build/*
+
+# Ignore built driver.
+cpp-graph-json-driver
+
+# Ignore Mac stuff.
+.DS_Store
+
+# Ignore VS Code settings.
+.vscode/

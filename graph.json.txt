@@ -1,0 +1,39 @@
+{
+  "graphs": [
+
+  ]
+}
+
+
+{
+  "graph": {
+    "id": "",
+    "label": "",
+    "directed": true, // default true
+    "type": "",
+    "metadata": {},
+    "nodes": {
+      "nodeIdBlarg": {
+        "label": "",
+        "metadata": {
+
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "",
+        "source": "", // required
+        "target": "", // required
+        "relation": "",
+        "directed": true, // default true
+        "label": "",
+        "metadata": {
+
+        }
+      }
+    ]
+  }
+}
+
+

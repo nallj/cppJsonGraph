@@ -1,0 +1,31 @@
+{
+  "graph": {
+    "id": "single graph",
+    "label": "",
+    "directed": true,
+    "type": "",
+    "nodes": {
+      "nodeIdBlarg": {
+        "label": "",
+        "metadata": {
+          "single0n": "jorp",
+          "single1n": "florp"
+        }
+      }
+    },
+    "edges": [
+      {
+        "id": "",
+        "source": "",
+        "target": "",
+        "relation": "",
+        "directed": true,
+        "label": "",
+        "metadata": {
+          "single0e": "gnorp",
+          "single1e": "skorp"
+        }
+      }
+    ]
+  }
+}
