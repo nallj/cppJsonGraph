@@ -33,8 +33,8 @@ add_subdirectory(lib/json)
 add_subdirectory(lib/json-schema-validator)
 
 # Library CMakeLists.txt files
-find_package(nlohmann_json 3.2.0 REQUIRED)
-find_package(nlohmann_json_schema_validator REQUIRED)
+#find_package(nlohmann_json 3.2.0 REQUIRED)
+#find_package(nlohmann_json_schema_validator REQUIRED)
 
 # TODO: Do all these files need to explicitly listed here?
 ###### add_library(cpp_graph_json STATIC nlohmann_json)
