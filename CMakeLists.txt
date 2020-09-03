@@ -4,37 +4,30 @@ cmake_minimum_required(VERSION 3.2)
 # Set project identifier.
 project(cpp_graph_json)
 
-#[[
-  TODO: Use the repositories as external sources.
-  https://stackoverflow.com/questions/38006584/how-to-clone-and-integrate-external-from-git-cmake-project-into-local-one
-
-  NOTE: Always run `cmake` in the build directory (a.k.a. uild out-of-source)
-  https://stackoverflow.com/questions/9680420/looking-for-a-cmake-clean-command-to-clear-up-cmake-output
-
-  add_library may use “generator expressions” with the syntax $<...>.
-  https://cmake.org/cmake/help/v3.2/manual/cmake-generator-expressions.7.html#manual:cmake-generator-expressions(7)
-
-  NESTED target_link_libraries
-  https://stackoverflow.com/questions/57186187/cmake-nested-libraries
-
-  From the website (https://cmake.org/cmake/help/v3.2/manual/cmake-buildsystem.7.html#binary-targets)
-    add_library(archive archive.cpp zip.cpp lzma.cpp)
-    add_executable(zipapp zipapp.cpp)
-    target_link_libraries(zipapp archive)
-]]
-
 # We're not interested in extras.
 set(JSON_BuildTests OFF CACHE INTERNAL "")
 set(BUILD_TESTS OFF CACHE BOOL "Don't build tests for nlohmann_json_schema_validator." FORCE)
 set(BUILD_EXAMPLES OFF CACHE BOOL "Don't build examples for nlohmann_json_schema_validator." FORCE)
 
-# add_subdirectory(nlohmann_json)
-add_subdirectory(lib/json)
-add_subdirectory(lib/json-schema-validator)
+include(FetchContent)
 
-# Library CMakeLists.txt files
-#find_package(nlohmann_json 3.2.0 REQUIRED)
-#find_package(nlohmann_json_schema_validator REQUIRED)
+# When all this works, use `ArthurSonzogni/nlohmann_json_cmake_fetchcontent.git` instead.
+FetchContent_Declare(json
+  GIT_REPOSITORY https://github.com/nlohmann/json.git
+  GIT_TAG v3.7.3)
+
+FetchContent_GetProperties(json)
+if(NOT json_POPULATED)
+  FetchContent_Populate(json)
+  add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR} EXCLUDE_FROM_ALL)
+endif()
+
+
+FetchContent_Declare(nlohmann_json_schema_validator
+  GIT_REPOSITORY https://github.com/pboettch/json-schema-validator.git
+  GIT_TAG 2.1.0)
+FetchContent_MakeAvailable(nlohmann_json_schema_validator)
+
 
 # TODO: Do all these files need to explicitly listed here?
 ###### add_library(cpp_graph_json STATIC nlohmann_json)
@@ -53,53 +46,9 @@ target_link_libraries(cpp_graph_json
   PRIVATE nlohmann_json_schema_validator)
 
 # add the executable
-add_executable(cpp-graph-json-driver src/main.cpp) # cpp_graph_json)
-#[[
-  add_executable(cpp-graph-json-driver
-    src/main.cpp
-    src/schema.cpp
-    src/jgReader.cpp
-    src/graph.cpp
-    src/utility.cpp)
-]]
+add_executable(cpp-graph-json-driver src/main.cpp)
 
 target_link_libraries(cpp-graph-json-driver
   PRIVATE cpp_graph_json
   PRIVATE nlohmann_json::nlohmann_json
   PRIVATE nlohmann_json_schema_validator)
-#[[
-  target_link_libraries(cpp-graph-json-driver
-    PRIVATE nlohmann_json::nlohmann_json
-    PRIVATE nlohmann_json_schema_validator)
-]]
-
-
-
-
-
-
-
-# Working - json library with driver
-#[[
-  set(JSON_BuildTests OFF CACHE INTERNAL "")
-  set(BUILD_TESTS OFF CACHE BOOL "Don't build tests for nlohmann_json_schema_validator." FORCE)
-  set(BUILD_EXAMPLES OFF CACHE BOOL "Don't build examples for nlohmann_json_schema_validator." FORCE)
-
-  add_subdirectory(lib/json)
-  add_subdirectory(lib/json-schema-validator)
-
-  find_package(nlohmann_json 3.2.0 REQUIRED)
-  find_package(nlohmann_json_schema_validator REQUIRED)
-
-  add_library(cpp_graph_json STATIC src/jgWriter.cpp src/graph.cpp src/jgReader.cpp)
-
-  target_link_libraries(cpp_graph_json PRIVATE nlohmann_json::nlohmann_json)
-
-  # add the executable
-  add_executable(cpp-graph-json-driver src/main.cpp) # cpp_graph_json)
-
-  target_link_libraries(cpp-graph-json-driver
-    PRIVATE cpp_graph_json
-    PRIVATE nlohmann_json::nlohmann_json
-    PRIVATE nlohmann_json_schema_validator)
-]]
