@@ -5,8 +5,8 @@
 //#include <nlohmann/json.hpp>
 //#include <nlohmann/json-schema.hpp>
 
-#include "jgWriter.hpp"
-#include "jgReader.hpp"
+#include <cppJsonGraph/jgWriter.hpp>
+#include <cppJsonGraph/jgReader.hpp>
 
 using jgReader = nallj::jgReader;
 

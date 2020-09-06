@@ -1,4 +1,4 @@
-#include "graphEdge.hpp"
+#include <cppJsonGraph/graphEdge.hpp>
 
 namespace nallj {
   graphEdge::graphEdge(const json& jsonGraphEdge) :

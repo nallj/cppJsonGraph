@@ -1,4 +1,4 @@
-#include "base.hpp"
+#include <cppJsonGraph/base.hpp>
 
 namespace nallj {
   base::base() :

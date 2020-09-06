@@ -9,7 +9,7 @@
 #include <nlohmann/json.hpp>
 #include <nlohmann/json-schema.hpp>
 
-#include "schema.cpp"
+#include "schema.hpp"
 #include "graph.hpp"
 
 using json = nlohmann::json;

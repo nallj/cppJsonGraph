@@ -1,4 +1,4 @@
-#include "jgReader.hpp"
+#include <cppJsonGraph/jgReader.hpp>
 
 namespace nallj {
   jgReader::jgReader() {

@@ -1,4 +1,4 @@
-#include "graphNode.hpp"
+#include <cppJsonGraph/graphNode.hpp>
 
 /*
 "nodes": {

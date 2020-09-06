@@ -1,6 +1,6 @@
 
 create: build-dir
-	cd build && cmake .. && make && mv cpp-graph-json-driver ..
+	cd build && cmake .. && make && mv app/cpp-graph-json-driver ..
 
 build-dir:
 	mkdir -p build

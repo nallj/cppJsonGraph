@@ -1,4 +1,4 @@
-#include "utility.hpp"
+#include <cppJsonGraph/utility.hpp>
 
 namespace nallj {
   template <typename T>

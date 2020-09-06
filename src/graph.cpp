@@ -1,4 +1,4 @@
-#include "graph.hpp"
+#include <cppJsonGraph/graph.hpp>
 
 namespace nallj {
   // graph::graph() {}

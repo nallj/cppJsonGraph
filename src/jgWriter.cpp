@@ -1,4 +1,4 @@
-#include "jgWriter.hpp"
+#include <cppJsonGraph/jgWriter.hpp>
 
 jgWriter::jgWriter() {
   std::cout << "I am the gjWriter!\n";
