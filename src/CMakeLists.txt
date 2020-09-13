@@ -2,11 +2,12 @@ file(GLOB HEADER_LIST CONFIGURE_DEPENDS "${cppJsonGraph_SOURCE_DIR}/include/cppJ
 
 add_library(cpp_graph_json STATIC
   base.cpp
+  deserializer.cpp
   graph.cpp
   graphEdge.cpp
   graphNode.cpp
-  jgReader.cpp
-  jgWriter.cpp
+  informedException.cpp
+  serializer.cpp
   ${HEADER_LIST} # Why is this necessary?  What good are the headers.
 )
 
@@ -17,8 +18,8 @@ target_link_libraries(cpp_graph_json
   PRIVATE nlohmann_json::nlohmann_json
   PRIVATE nlohmann_json_schema_validator)
 
-# All users of this library will need at least C++11.
-target_compile_features(cpp_graph_json PUBLIC cxx_std_11)
+# All users of this library will need at least C++17.
+target_compile_features(cpp_graph_json PUBLIC cxx_std_17)
 
 # IDEs should put the headers in a nice place.
 source_group(

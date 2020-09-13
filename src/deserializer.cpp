@@ -1,7 +1,7 @@
-#include <cppJsonGraph/jgReader.hpp>
+#include <cppJsonGraph/deserializer.hpp>
 
 namespace nallj {
-  jgReader::jgReader() {
+  deserializer::deserializer() {
     try {
       validator.set_root_schema(schema);
     } catch (const std::exception &e) {
@@ -11,7 +11,7 @@ namespace nallj {
     }
   }
 
-  std::vector<graph> jgReader::getGraphs(std::ifstream& file) {
+  std::vector<graph> deserializer::getGraphs(std::ifstream& file) {
     json jsonData;
     file >> jsonData;
 
@@ -30,7 +30,7 @@ namespace nallj {
     return result;
   }
 
-  bool jgReader::isFileValid(std::ifstream& file) {
+  bool deserializer::isFileValid(std::ifstream& file) {
     json jsonData;
 
     try {

@@ -1,14 +1,17 @@
-#ifndef JG_GRAPH_EDGE_HPP
-#define JG_GRAPH_EDGE_HPP
+#ifndef NALLJ_CJG_GRAPH_EDGE
+#define NALLJ_CJG_GRAPH_EDGE
 
 #include <unordered_map> // unordered_map
+#include <string> // string
 
 // Remove later.
 #include <iostream> // cout
+#include <memory> // make_shared, shared_ptr
 
 #include <nlohmann/json.hpp>
 
 #include "base.hpp"
+#include "informedException.hpp"
 
 //class base;
 
@@ -59,7 +62,23 @@
 using json = nlohmann::json;
 
 namespace nallj {
+  // enum graphEdgeParamType {
+  //   DIRECTED, ID, LABEL, RELATION, SOURCE, TARGET
+  // };
+
   class graphEdge : public base {
+    enum paramType {
+      DIRECTED, ID, LABEL, RELATION, SOURCE, TARGET
+    };
+
+    std::unordered_map<paramType, std::shared_ptr<bool>> paramToIsSetPtrMap;
+    std::unordered_map<paramType, std::shared_ptr<std::string>> paramToValPtrMap;
+    std::unordered_map<paramType, std::string> paramToKeyMap;
+    
+    // std::unordered_map<graphEdgeParamType, std::shared_ptr<bool>> paramToIsSetPtrMap;
+    // std::unordered_map<graphEdgeParamType, std::shared_ptr<std::string>> paramToValPtrMap;
+    // std::unordered_map<graphEdgeParamType, std::string> paramToKeyMap;
+
     // Required items.
     std::string source_;
     std::string target_;
@@ -79,23 +98,41 @@ namespace nallj {
     bool relationIsSet_;
 
   public:
-    graphEdge(const json& jsonGraphEdge);
+    graphEdge();
+    graphEdge(const json& jsonEdge);
     graphEdge(std::string source, std::string target);
 
-    // Getters.
+    // Accessors
+    std::string getId() const;
+    bool getIdIsSet() const;
+    std::string getLabel() const;
+    bool getLabelIsSet() const;
+    std::string getRelation() const;
+    bool getRelationIsSet() const;
+    std::string getSource() const;
+    std::string getTarget() const;
+
+    // Mutators
     void setId(std::string id);
     void setLabel(std::string label);
-    // void setMetadata(std::unordered_map<std::string, std::string> metadata);
     void setRelation(std::string relation);
+    void setSource(std::string source);
+    void setTarget(std::string target);
+    void unsetId();
+    void unsetLabel();
+    void unsetRelation();
 
+    // Methods
+    void addScalarToGraphJsonIfSet(json& edgeJson, paramType paramType) const;
     // TODO: Figure out why utility.hpp doesn't work.
     template <typename T>
     bool hydrateAndCheckIfSet(const json& jsonEdge, const char* itemKey, T& variable);
+    void hydratePointerMaps();
+    template <typename T>
+    void hydrateScalar(const json& jsonEdge, const char* itemKey, T& variable);
     // TODO: Place in utility.hpp when ready.
     // bool hydrateMetadataAndCheckIfSet(const json& jsonEdge);
-
-    // Setters.
-    //std::string getId
+    json toJson() const;
   };
 }
 

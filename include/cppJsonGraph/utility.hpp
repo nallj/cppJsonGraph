@@ -1,5 +1,5 @@
-#ifndef JG_UTILITY_HPP
-#define JG_UTILITY_HPP
+#ifndef NALLJ_CJG_UTILITY
+#define NALLJ_CJG_UTILITY
 
 #include <iostream> // cout
 

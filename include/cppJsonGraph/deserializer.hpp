@@ -1,5 +1,5 @@
-#ifndef JG_READER_HPP
-#define JG_READER_HPP
+#ifndef NALLJ_CJG_DESERIALIZER
+#define NALLJ_CJG_DESERIALIZER
 
 #include <fstream> // ifstream
 #include <iomanip> // setw
@@ -16,7 +16,7 @@ using json = nlohmann::json;
 using nlohmann::json_schema::json_validator;
 
 namespace nallj {
-  class jgReader {
+  class deserializer {
     json_validator validator;
 
     // Not needed due to implict cast.
@@ -24,7 +24,7 @@ namespace nallj {
     //void produceGraphAndInsert(json jsonData, std::vector<graph>& collection);
 
   public:
-    jgReader();
+    deserializer();
 
     bool isFileValid(std::ifstream& file);
     std::vector<graph> getGraphs(std::ifstream& file);

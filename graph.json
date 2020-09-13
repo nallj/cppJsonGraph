@@ -1,31 +1,35 @@
 {
   "graph": {
-    "id": "single graph",
-    "label": "",
     "directed": true,
-    "type": "",
-    "nodes": {
-      "nodeIdBlarg": {
-        "label": "",
-        "metadata": {
-          "single0n": "jorp",
-          "single1n": "florp"
-        }
-      }
-    },
     "edges": [
       {
-        "id": "",
-        "source": "",
-        "target": "",
-        "relation": "",
         "directed": true,
-        "label": "",
+        "id": "123",
+        "label": "GARF",
         "metadata": {
           "single0e": "gnorp",
           "single1e": "skorp"
+        },
+        "relation": "IDK",
+        "source": "ur mom",
+        "target": "U"
+      }
+    ],
+    "id": "single graph",
+    "label": "nah",
+    "metadata": {
+      "mdGraphBlah": "graph garg",
+      "mdGraphGlorg": "graph norm"
+    },
+    "nodes": {
+      "nodeIdBlarg": {
+        "label": "lablol",
+        "metadata": {
+          "mdNodeBlah": "oh is it",
+          "mdNodeGlorg": "ur mother"
         }
       }
-    ]
+    },
+    "type": "GRAPH_THING"
   }
 }

@@ -1,54 +1,34 @@
-#ifndef JG_GRAPH_HPP
-#define JG_GRAPH_HPP
+#ifndef NALLJ_CJG_GRAPH
+#define NALLJ_CJG_GRAPH
 
-// #include <deque>
-#include <map> // unordered_map
-#include <memory> // unique_ptr
-// #include <vector> // vector
+#include <memory> // make_shared, shared_ptr
+#include <unordered_map> // unordered_map
+#include <vector> // vector
 
 // Get rid of later.
 #include <iostream> // cout
 #include <iomanip> // setw
 
 #include <nlohmann/json.hpp>
-// #include <nlohmann/json-schema.hpp>
 
 #include "base.hpp"
 #include "graphEdge.hpp"
 #include "graphNode.hpp"
-
+#include "informedException.hpp"
 #include "utility.hpp"
 
 using json = nlohmann::json;
 
-// class graph;
-// using graphs_t = std::vector<std::shared_ptr<graph>>;
-
-/*
-  "id": {
-    "type": "string"
-  },
-  "label": {
-    "type": "string"
-  },
-  "directed": {
-    "type": [
-      "boolean"
-    ],
-    "default": true
-  },
-  "type": {
-    "type": "string"
-  },
-  "metadata": {
-    "type": [
-      "object"
-    ]
-  },
-*/
-
 namespace nallj {
-  class graph : private base {
+  enum graphParamType {
+    ID, LABEL, TYPE, DIRECTED
+  };
+
+  class graph : public base {
+    std::unordered_map<graphParamType, std::shared_ptr<bool>> graphParamToIsSetPtrMap;
+    std::unordered_map<graphParamType, std::shared_ptr<std::string>> graphParamToValPtrMap;
+    std::unordered_map<graphParamType, std::string> graphParamToKeyMap;
+
     // Required items.
     std::unordered_map<std::string, graphNode> nodes_;
     std::vector<graphEdge> edges_;
@@ -67,6 +47,8 @@ namespace nallj {
     bool typeIsSet_;
     // bool metadataIsSet_;
 
+    void addScalarToGraphJsonIfSet(json& graphJson, graphParamType paramType) const;
+    void hydratePointerMaps();
     // TODO: Figure out the undefined reference when using `base`.
     template <typename T>
     bool hydrateAndCheckIfSet(const json& jsonGraph, const char* itemKey, T& variable);
@@ -74,33 +56,40 @@ namespace nallj {
     //bool hydrateMetadataAndCheckIfSet(const json& jsonGraph);
 
   public:
-    // graph(); // needed in lepton's successor (see graphHandler line 27)
+    graph();
     graph(const json& jsonGraph);
     graph(std::unordered_map<std::string, graphNode> nodes_, std::vector<graphEdge> edges_);
 
-    std::string getId() {
-      return id_;
-    }
+    // Accessors
+    graphEdge getEdgeAt(unsigned index) const;
+    std::vector<graphEdge>::const_iterator getEdgeBeginIt() const;
+    unsigned getEdgeCount() const;
+    std::vector<graphEdge>::const_iterator getEdgeEndIt() const;
+    std::string getId() const;
+    bool getIdIsSet() const;
+    std::string getLabel() const;
+    bool getLabelIsSet() const;
+    std::string getType() const;
+    bool getTypeIsSet() const;
+    bool hasNode(std::string key) const;
 
-    std::string getLabel() {
-      return label_;
-    }
+    // Mutators
+    void addEdge(graphEdge& edge);
+    void addNode(std::string key, graphNode& node);
+    void clearEdges();
+    void clearNodes();
+    void removeEdgeAt(unsigned index);
+    void removeEdgeRange(unsigned start, unsigned end);
+    void removeNode(std::string key);
+    void setId(std::string id);
+    void setLabel(std::string label);
+    void setType(std::string type);
+    void unsetId();
+    void unsetLabel();
+    void unsetType();
 
-    std::string getType() {
-      return type_;
-    }
-
-    bool getIdIsSet() {
-      return idIsSet_;
-    }
-
-    bool getLabelIsSet() {
-      return labelIsSet_;
-    }
-
-    bool getTypeIsSet() {
-      return typeIsSet_;
-    }
+    // Methods
+    json toJson() const;
   };
 }
 

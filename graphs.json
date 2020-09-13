@@ -32,6 +32,7 @@
     },
     {
       "id": "graph 2",
+      "directed": true,
       "metadata": {
         "mutliG0": "jorp",
         "mutliG1": "florp"

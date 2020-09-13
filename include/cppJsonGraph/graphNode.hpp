@@ -1,5 +1,5 @@
-#ifndef JG_GRAPH_NODE_HPP
-#define JG_GRAPH_NODE_HPP
+#ifndef NALLJ_CJG_GRAPH_NODE
+#define NALLJ_CJG_GRAPH_NODE
 
 // #include <deque>
 #include <memory> // unique_ptr
@@ -47,7 +47,9 @@ namespace nallj {
     graphNode();
     // graphNode(std::string node_id, unsigned task_type_id);
 
-    // Getters.
+    std::string getLabel() const;
+    bool getLabelIsSet() const;
+  
     void setLabel(std::string label);
     // void setMetadata(std::unordered_map<std::string, std::string> metadata);
 
@@ -56,9 +58,7 @@ namespace nallj {
     bool hydrateAndCheckIfSet(const json& jsonNode, const char* itemKey, T& variable);
     // TODO: Place in utility.hpp when ready.
     bool hydrateMetadataAndCheckIfSet(const json& jsonNode);
-
-    // Setters.
-    //std::string getLabel
+    json toJson() const;
   };
 }
 

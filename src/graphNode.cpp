@@ -21,17 +21,24 @@
 namespace nallj {
   graphNode::graphNode(const json& jsonNode) : 
     base(jsonNode), labelIsSet_(false) {
-    
+
     labelIsSet_ = hydrateAndCheckIfSet(jsonNode, "label", label_);
   }
 
   graphNode::graphNode() : 
-    labelIsSet_(false) {
-    std::cout << "\nI am graph node\n";
+    labelIsSet_(false) { }
+
+  std::string graphNode::getLabel() const {
+    return label_;
+  }
+
+  bool graphNode::getLabelIsSet() const {
+    return labelIsSet_;
   }
 
   void graphNode::setLabel(std::string label) {
     label_ = label;
+    labelIsSet_ = true;
   }
 
   // void graphNode::setMetadata(std::unordered_map<std::string, std::string> metadata) {
@@ -47,5 +54,20 @@ namespace nallj {
       return true;
     }
     return false;
+  }
+
+  json graphNode::toJson() const {
+    json nodeJson = json::object();
+    
+    if (labelIsSet_) {
+      nodeJson["label"] = label_;
+    }
+
+    const auto metadataJson = getMetadataJson();
+    if (!metadataJson.is_null()) {
+      nodeJson["metadata"] = metadataJson;
+    }
+
+    return nodeJson;
   }
 }

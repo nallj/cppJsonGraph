@@ -1,5 +1,5 @@
-#ifndef JG_BASE_HPP
-#define JG_BASE_HPP
+#ifndef NALLJ_CJG_BASE
+#define NALLJ_CJG_BASE
 
 // #include <deque>
 #include <map> // unordered_map
@@ -16,6 +16,7 @@
 // #include "graphEdge.hpp"
 // #include "graphNode.hpp"
 
+#include "informedException.hpp"
 #include "utility.hpp"
 
 using json = nlohmann::json;
@@ -43,10 +44,17 @@ namespace nallj {
     bool hydrateAndCheckIfSet2(const json& jsonGraph, const char* itemKey, T& variable);
 
   public:
-    bool getMetadataIsSet();
-    
-    std::unordered_map<std::string, std::string> getMetadata();
+    // Accessors
+    std::unordered_map<std::string, std::string> getMetadata() const;
+    bool getMetadataIsSet() const;
+    json getMetadataJson() const;
+    bool hasMetadata(std::string key) const;
+
+    // Mutators
+    void addMetadata(std::string key, std::string value);
+    void clearMetadata();
     void setMetadata(std::unordered_map<std::string, std::string> metadata);
+    void unsetMetadata();
   };
 }
 
