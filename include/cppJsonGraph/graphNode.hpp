@@ -1,10 +1,7 @@
 #ifndef NALLJ_CJG_GRAPH_NODE
 #define NALLJ_CJG_GRAPH_NODE
 
-// #include <deque>
-#include <memory> // unique_ptr
 #include <unordered_map>
-//#include <vector>
 
 // Remove later.
 #include <iostream>
@@ -37,21 +34,21 @@ namespace nallj {
   class graphNode : public base {
     // Unrequired items.
     std::string label_;
-    //std::unordered_map<std::string, std::string> metadata_;
 
     bool labelIsSet_;
-    //bool metadataIsSet_;
 
   public:
     graphNode(const json& jsonNode);
     graphNode();
     // graphNode(std::string node_id, unsigned task_type_id);
 
+    // Accessors
     std::string getLabel() const;
     bool getLabelIsSet() const;
   
+    // Mutators
     void setLabel(std::string label);
-    // void setMetadata(std::unordered_map<std::string, std::string> metadata);
+    void unsetLabel();
 
     // TODO: Figure out why utility.hpp doesn't work.
     template <typename T>

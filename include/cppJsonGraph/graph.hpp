@@ -14,20 +14,16 @@
 #include "base.hpp"
 #include "graphEdge.hpp"
 #include "graphNode.hpp"
-#include "informedException.hpp"
+#include "cjgException.hpp"
 #include "utility.hpp"
 
 using json = nlohmann::json;
 
 namespace nallj {
-  enum graphParamType {
-    ID, LABEL, TYPE, DIRECTED
-  };
-
   class graph : public base {
-    std::unordered_map<graphParamType, std::shared_ptr<bool>> graphParamToIsSetPtrMap;
-    std::unordered_map<graphParamType, std::shared_ptr<std::string>> graphParamToValPtrMap;
-    std::unordered_map<graphParamType, std::string> graphParamToKeyMap;
+    enum paramType {
+      ID, LABEL, TYPE, DIRECTED
+    };
 
     // Required items.
     std::unordered_map<std::string, graphNode> nodes_;
@@ -40,20 +36,16 @@ namespace nallj {
     std::string id_;
     std::string label_;
     std::string type_;
-    // std::unordered_map<std::string, std::string> metadata_;
 
     bool idIsSet_;
     bool labelIsSet_;
     bool typeIsSet_;
-    // bool metadataIsSet_;
 
-    void addScalarToGraphJsonIfSet(json& graphJson, graphParamType paramType) const;
-    void hydratePointerMaps();
+    void addScalarToGraphJsonIfSet(json& graphJson, paramType paramType) const;
+    std::tuple<bool, std::string, std::string> getOptParamByType(paramType type) const;
     // TODO: Figure out the undefined reference when using `base`.
     template <typename T>
     bool hydrateAndCheckIfSet(const json& jsonGraph, const char* itemKey, T& variable);
-    // TODO: Place in utility.hpp when ready.
-    //bool hydrateMetadataAndCheckIfSet(const json& jsonGraph);
 
   public:
     graph();
@@ -61,6 +53,7 @@ namespace nallj {
     graph(std::unordered_map<std::string, graphNode> nodes_, std::vector<graphEdge> edges_);
 
     // Accessors
+    bool getDirected() const;
     graphEdge getEdgeAt(unsigned index) const;
     std::vector<graphEdge>::const_iterator getEdgeBeginIt() const;
     unsigned getEdgeCount() const;
@@ -81,6 +74,7 @@ namespace nallj {
     void removeEdgeAt(unsigned index);
     void removeEdgeRange(unsigned start, unsigned end);
     void removeNode(std::string key);
+    void setDirected(bool directed);
     void setId(std::string id);
     void setLabel(std::string label);
     void setType(std::string type);

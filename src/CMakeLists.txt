@@ -6,7 +6,7 @@ add_library(cpp_graph_json STATIC
   graph.cpp
   graphEdge.cpp
   graphNode.cpp
-  informedException.cpp
+  cjgException.cpp
   serializer.cpp
   ${HEADER_LIST} # Why is this necessary?  What good are the headers.
 )

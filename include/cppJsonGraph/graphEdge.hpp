@@ -6,12 +6,13 @@
 
 // Remove later.
 #include <iostream> // cout
-#include <memory> // make_shared, shared_ptr
+#include <tuple>
+// #include <utility> // pair
 
 #include <nlohmann/json.hpp>
 
 #include "base.hpp"
-#include "informedException.hpp"
+#include "cjgException.hpp"
 
 //class base;
 
@@ -62,22 +63,10 @@
 using json = nlohmann::json;
 
 namespace nallj {
-  // enum graphEdgeParamType {
-  //   DIRECTED, ID, LABEL, RELATION, SOURCE, TARGET
-  // };
-
   class graphEdge : public base {
     enum paramType {
       DIRECTED, ID, LABEL, RELATION, SOURCE, TARGET
     };
-
-    std::unordered_map<paramType, std::shared_ptr<bool>> paramToIsSetPtrMap;
-    std::unordered_map<paramType, std::shared_ptr<std::string>> paramToValPtrMap;
-    std::unordered_map<paramType, std::string> paramToKeyMap;
-    
-    // std::unordered_map<graphEdgeParamType, std::shared_ptr<bool>> paramToIsSetPtrMap;
-    // std::unordered_map<graphEdgeParamType, std::shared_ptr<std::string>> paramToValPtrMap;
-    // std::unordered_map<graphEdgeParamType, std::string> paramToKeyMap;
 
     // Required items.
     std::string source_;
@@ -94,8 +83,9 @@ namespace nallj {
 
     bool idIsSet_;
     bool labelIsSet_;
-    // bool metadataIsSet_;
     bool relationIsSet_;
+
+    std::tuple<bool, std::string, std::string> getOptParamByType(paramType type) const;
 
   public:
     graphEdge();
@@ -103,6 +93,7 @@ namespace nallj {
     graphEdge(std::string source, std::string target);
 
     // Accessors
+    bool getDirected() const;
     std::string getId() const;
     bool getIdIsSet() const;
     std::string getLabel() const;
@@ -113,6 +104,7 @@ namespace nallj {
     std::string getTarget() const;
 
     // Mutators
+    void setDirected(bool directed);
     void setId(std::string id);
     void setLabel(std::string label);
     void setRelation(std::string relation);
@@ -127,11 +119,8 @@ namespace nallj {
     // TODO: Figure out why utility.hpp doesn't work.
     template <typename T>
     bool hydrateAndCheckIfSet(const json& jsonEdge, const char* itemKey, T& variable);
-    void hydratePointerMaps();
     template <typename T>
     void hydrateScalar(const json& jsonEdge, const char* itemKey, T& variable);
-    // TODO: Place in utility.hpp when ready.
-    // bool hydrateMetadataAndCheckIfSet(const json& jsonEdge);
     json toJson() const;
   };
 }

@@ -1,6 +1,7 @@
 #include <fstream> // ifstream
 #include <iomanip> // setw
 #include <iostream> // cout
+#include <stdlib.h> // EXIT_SUCCESS
 #include <string> // string
 #include <vector> // vector
 
@@ -41,7 +42,7 @@ int main() {
   auto reader = nallj::deserializer();
 
   if (!reader.isFileValid(graphFile) || !reader.isFileValid(graphsFile)) {
-    throw nallj::informedException("One of the input files violates the JSON Graph Schema v2.");
+    throw nallj::cjgException("One of the input files violates the JSON Graph Schema v2.");
   }
 
   // Seek to beginning of the input file streams.

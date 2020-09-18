@@ -3,17 +3,11 @@
 namespace nallj {
 
   graph::graph() :
-    directed_(true), idIsSet_(false), labelIsSet_(false), typeIsSet_(false) {
-
-    hydratePointerMaps();
-  }
+    directed_(true), idIsSet_(false), labelIsSet_(false), typeIsSet_(false) {}
 
   graph::graph(std::unordered_map<std::string, graphNode> nodes, std::vector<graphEdge> edges) :
     directed_(true), idIsSet_(false), labelIsSet_(false), typeIsSet_(false), nodes_(nodes),
-    edges_(edges) {
-
-    hydratePointerMaps();
-  }
+    edges_(edges) {}
 
   graph::graph(const json& jsonGraph) :
     base(jsonGraph), directed_(true), idIsSet_(false), labelIsSet_(false), typeIsSet_(false) {
@@ -36,15 +30,17 @@ namespace nallj {
     for (auto& jsonEdge : jsonGraph["edges"]) {
       edges_.push_back(jsonEdge);
     }
-
-    hydratePointerMaps();
   }
 
   /* Accessors */
 
+  bool graph::getDirected() const {
+    return directed_;
+  }
+
   graphEdge graph::getEdgeAt(unsigned index) const {
     if (getEdgeCount() <= index) {
-      throw informedException("Requested edge index is out of range.");
+      throw cjgException("Requested edge index is out of range.");
     }
     return edges_.at(index);
   }
@@ -98,7 +94,7 @@ namespace nallj {
 
   void graph::addNode(std::string key, graphNode& node) {
     if (hasNode(key)) {
-      throw new informedException("Can't add node; key already has value.");
+      throw new cjgException("Can't add node; key already has value.");
     }
     nodes_[key] = node;
   }
@@ -113,17 +109,17 @@ namespace nallj {
 
   void graph::removeEdgeAt(unsigned index) {
     if (getEdgeCount() <= index) {
-      throw informedException("Requested edge index is out of range.");
+      throw cjgException("Requested edge index is out of range.");
     }
     edges_.erase(getEdgeBeginIt() + index);
   }
 
   void graph::removeEdgeRange(unsigned start, unsigned end) {
     if (getEdgeCount() <= start) {
-      throw informedException("Requested edge start index is out of range.");
+      throw cjgException("Requested edge start index is out of range.");
     }
     if (getEdgeCount() <= end) {
-      throw informedException("Requested edge end index is out of range.");
+      throw cjgException("Requested edge end index is out of range.");
     }
     auto beginning = getEdgeBeginIt();
     edges_.erase(beginning + start, beginning + end);
@@ -132,9 +128,13 @@ namespace nallj {
   void graph::removeNode(std::string key) {
     auto it = nodes_.find(key);
     if (it == nodes_.end()) {
-      throw informedException("Graph does not contain requested key.");
+      throw cjgException("Graph does not contain requested key.");
     }
     nodes_.erase(it);
+  }
+
+  void graph::setDirected(bool directed) {
+    directed_ = directed;
   }
 
   void graph::setId(std::string id) {
@@ -169,10 +169,24 @@ namespace nallj {
 
   /* Methods */
 
-  void graph::addScalarToGraphJsonIfSet(json& graphJson, graphParamType paramType) const {
-    if (graphParamToIsSetPtrMap.at(paramType)) {
-      auto graphParamKey = graphParamToKeyMap.at(paramType);
-      graphJson[graphParamKey] = *graphParamToValPtrMap.at(paramType).get();
+  void graph::addScalarToGraphJsonIfSet(json& graphJson, paramType paramType) const {
+    auto varTuple = getOptParamByType(paramType);
+    auto [varIsSet, varJsonKey, varVal] = varTuple;
+    if (varIsSet) {
+      graphJson[varJsonKey] = varVal;
+    }
+  }
+
+  std::tuple<bool, std::string, std::string> graph::getOptParamByType(paramType type) const {
+    switch (type) {
+      case paramType::ID:
+        return { idIsSet_, "id", id_ };
+      case paramType::LABEL:
+        return { labelIsSet_, "label", label_ };
+      case paramType::TYPE:
+        return { typeIsSet_, "type", type_ };
+      default:
+        throw cjgException("Invalid param type requested.");
     }
   }
 
@@ -187,40 +201,15 @@ namespace nallj {
     return false;
   }
 
-  void graph::hydratePointerMaps() {
-
-    auto idPtr = std::make_shared<std::string>(id_);
-    auto labelPtr = std::make_shared<std::string>(label_);
-    auto typePtr = std::make_shared<std::string>(type_);
-
-    graphParamToValPtrMap.emplace(graphParamType::ID, idPtr);
-    graphParamToValPtrMap.emplace(graphParamType::LABEL, labelPtr);
-    graphParamToValPtrMap.emplace(graphParamType::TYPE, typePtr);
-
-    auto idIsSetPtr = std::make_shared<bool>(idIsSet_);
-    auto labelIsSetPtr = std::make_shared<bool>(labelIsSet_);
-    auto typeIsSetPtr = std::make_shared<bool>(typeIsSet_);
-
-    graphParamToIsSetPtrMap.emplace(graphParamType::ID, idIsSetPtr);
-    graphParamToIsSetPtrMap.emplace(graphParamType::LABEL, labelIsSetPtr);
-    graphParamToIsSetPtrMap.emplace(graphParamType::TYPE, typeIsSetPtr);
-
-    graphParamToKeyMap = {
-      { graphParamType::ID, "id" },
-      { graphParamType::LABEL, "label" },
-      { graphParamType::TYPE, "type" }
-    };
-  }
-
   json graph::toJson() const {
     json graphJson = {
       { "directed", directed_ },
     };
 
     // Get optional parameters if they've been set.
-    addScalarToGraphJsonIfSet(graphJson, graphParamType::ID);
-    addScalarToGraphJsonIfSet(graphJson, graphParamType::LABEL);
-    addScalarToGraphJsonIfSet(graphJson, graphParamType::TYPE);
+    addScalarToGraphJsonIfSet(graphJson, paramType::ID);
+    addScalarToGraphJsonIfSet(graphJson, paramType::LABEL);
+    addScalarToGraphJsonIfSet(graphJson, paramType::TYPE);
 
     if (getMetadataIsSet()) {
       graphJson["metadata"] = getMetadataJson();

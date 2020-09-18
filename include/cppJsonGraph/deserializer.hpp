@@ -27,6 +27,7 @@ namespace nallj {
     deserializer();
 
     bool isFileValid(std::ifstream& file);
+    graph getGraph(std::ifstream& file);
     std::vector<graph> getGraphs(std::ifstream& file);
   };
 }

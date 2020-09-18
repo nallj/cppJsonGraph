@@ -11,6 +11,26 @@ namespace nallj {
     }
   }
 
+  bool deserializer::isFileValid(std::ifstream& file) {
+    json jsonData;
+
+    try {
+      file >> jsonData;
+      validator.validate(jsonData);
+      std::cout << "File LOOKS GOOD!\n";
+
+    } catch (const std::exception &e) {
+      std::cerr << "File is not valid: " << e.what() << "\n";
+      return false;
+    }
+    return true;
+  }
+
+  graph deserializer::getGraph(std::ifstream& file) {
+    auto graphs = getGraphs(file);
+    return graphs[0];
+  }
+
   std::vector<graph> deserializer::getGraphs(std::ifstream& file) {
     json jsonData;
     file >> jsonData;
@@ -28,20 +48,5 @@ namespace nallj {
       }
     }
     return result;
-  }
-
-  bool deserializer::isFileValid(std::ifstream& file) {
-    json jsonData;
-
-    try {
-      file >> jsonData;
-      validator.validate(jsonData);
-      std::cout << "File LOOKS GOOD!\n";
-
-    } catch (const std::exception &e) {
-      std::cerr << "File is not valid: " << e.what() << "\n";
-      return false;
-    }
-    return true;
   }
 }

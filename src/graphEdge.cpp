@@ -2,10 +2,7 @@
 
 namespace nallj {
   graphEdge::graphEdge() :
-    directed_(true), idIsSet_(false), labelIsSet_(false), relationIsSet_(false) {
-
-    hydratePointerMaps();
-  }
+    directed_(true), idIsSet_(false), labelIsSet_(false), relationIsSet_(false) {}
 
   graphEdge::graphEdge(const json& jsonEdge) :
     base(jsonEdge), directed_(true), idIsSet_(false), labelIsSet_(false), relationIsSet_(false) {
@@ -21,17 +18,16 @@ namespace nallj {
 
     // Get optional parameter with default value.
     hydrateAndCheckIfSet(jsonEdge, "directed", directed_);
-
-    hydratePointerMaps();
   }
 
   graphEdge::graphEdge(std::string source, std::string target) :
-    source_(source), target_(target), idIsSet_(false), labelIsSet_(false), relationIsSet_(false) {
-
-    hydratePointerMaps();
-  }
+    source_(source), target_(target), idIsSet_(false), labelIsSet_(false), relationIsSet_(false) {}
 
   /* Accessors */
+
+  bool graphEdge::getDirected() const {
+    return directed_;
+  }
 
   std::string graphEdge::getId() const {
     return id_;
@@ -66,6 +62,10 @@ namespace nallj {
   }
 
   /* Mutators */
+
+  void graphEdge::setDirected(bool directed) {
+    directed_ = directed;
+  }
 
   void graphEdge::setId(std::string id) {
     id_ = id;
@@ -108,12 +108,23 @@ namespace nallj {
   /* Methods */
 
   void graphEdge::addScalarToGraphJsonIfSet(json& graphJson, paramType paramType) const {
-    auto lol = *paramToIsSetPtrMap.at(paramType).get();
-    std::cout << "  Checking isSet: " << (lol ? "SET" : "UNSET");
-    if (*paramToIsSetPtrMap.at(paramType).get()) {
-      auto graphParamKey = paramToKeyMap.at(paramType);
-      std::cout << "  Value is\"" << *paramToValPtrMap.at(paramType).get() << "\"";
-      graphJson[graphParamKey] = *paramToValPtrMap.at(paramType).get();
+    auto varTuple = getOptParamByType(paramType);
+    auto [varIsSet, varJsonKey, varVal] = varTuple;
+    if (varIsSet) {
+      graphJson[varJsonKey] = varVal;
+    }
+  }
+
+  std::tuple<bool, std::string, std::string> graphEdge::getOptParamByType(paramType type) const {
+    switch (type) {
+      case paramType::ID:
+        return { idIsSet_, "id", id_ };
+      case paramType::LABEL:
+        return { labelIsSet_, "label", label_ };
+      case paramType::RELATION:
+        return { relationIsSet_, "relation", relation_ };
+      default:
+        throw cjgException("Invalid param type requested.");
     }
   }
 
@@ -133,35 +144,11 @@ namespace nallj {
     if (jsonEdge.count(itemKey) != 1) {
       std::string message =
         std::string("JSON object supplied missing required parameter \"") + itemKey + std::string("\".");
-      throw informedException(message);
+      throw cjgException(message);
     }
     auto item = jsonEdge[itemKey];
     auto value = item.get<T>();
     variable = value;
-  }
-
-  void graphEdge::hydratePointerMaps() {
-    auto idPtr = std::make_shared<std::string>(id_);
-    auto labelPtr = std::make_shared<std::string>(label_);
-    auto relationPtr = std::make_shared<std::string>(relation_);
-
-    paramToValPtrMap.emplace(paramType::ID, idPtr);
-    paramToValPtrMap.emplace(paramType::LABEL, labelPtr);
-    paramToValPtrMap.emplace(paramType::RELATION, relationPtr);
-
-    auto idIsSetPtr = std::make_shared<bool>(idIsSet_);
-    auto labelIsSetPtr = std::make_shared<bool>(labelIsSet_);
-    auto relationIsSetPtr = std::make_shared<bool>(relationIsSet_);
-
-    paramToIsSetPtrMap.emplace(paramType::ID, idIsSetPtr);
-    paramToIsSetPtrMap.emplace(paramType::LABEL, labelIsSetPtr);
-    paramToIsSetPtrMap.emplace(paramType::RELATION, relationIsSetPtr);
-
-    paramToKeyMap = {
-      { paramType::ID, "id" },
-      { paramType::LABEL, "label" },
-      { paramType::RELATION, "relation" }
-    };
   }
 
   json graphEdge::toJson() const {
@@ -172,22 +159,15 @@ namespace nallj {
       { "target", target_ }
     };
 
-    std::cout << "this edge is {" << idIsSet_ << "," << labelIsSet_ << ","
-              << relationIsSet_ << "}\n";
-
     // Add optional parameters if set.
-    std::cout << "Adding ID if set:\n";
     addScalarToGraphJsonIfSet(edgeJson, paramType::ID);
-    std::cout << "Adding LABEL if set:\n";
     addScalarToGraphJsonIfSet(edgeJson, paramType::LABEL);
-    std::cout << "Adding RELATION if set:\n";
     addScalarToGraphJsonIfSet(edgeJson, paramType::RELATION);
 
     if (getMetadataIsSet()) {
       edgeJson["metadata"] = getMetadataJson();
     }
 
-    std::cout << "Created JSON:\n" << edgeJson;
     return edgeJson;
   }
 }

@@ -3,19 +3,19 @@
 namespace nallj {
   serializer::serializer() {}
 
-  void serializer::saveGraph(std::ofstream& output, graph& graph) {
+  void serializer::saveGraph(std::ofstream& output, graph& graph) const {
     json fileJson = {
       { "graph", graph.toJson() }
     };
     output << std::setw(2) << fileJson << std::endl;
   }
 
-  void serializer::saveGraphs(std::ofstream& output, std::vector<graph>& graphs) {
+  void serializer::saveGraphs(std::ofstream& output, std::vector<graph>& graphs) const {
     if (!output.is_open()) {
-      throw informedException("Output stream is not open.");
+      throw cjgException("Output stream is not open.");
     }
     if (graphs.empty()) {
-      throw informedException("No graphs were provided to the serializer for saving.");
+      throw cjgException("No graphs were provided to the serializer for saving.");
     }
 
     json jsonGraphs;

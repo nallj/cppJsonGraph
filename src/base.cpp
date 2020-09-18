@@ -23,7 +23,7 @@ namespace nallj {
   
   json base::getMetadataJson() const {
     if (!metadataIsSet_) {
-      throw new informedException("Can't get metadata JSON; it's not set.");
+      throw new cjgException("Can't get metadata JSON; it's not set.");
     }
 
     json metadataJson = json::object();
@@ -42,7 +42,7 @@ namespace nallj {
 
   void base::addMetadata(std::string key, std::string value) {
     if (hasMetadata(key)) {
-      throw new informedException("Can't add metadata; key already has value.");
+      throw new cjgException("Can't add metadata; key already has value.");
     }
     metadata_[key] = value;
     metadataIsSet_ = true;

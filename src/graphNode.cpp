@@ -41,9 +41,10 @@ namespace nallj {
     labelIsSet_ = true;
   }
 
-  // void graphNode::setMetadata(std::unordered_map<std::string, std::string> metadata) {
-  //   metadata_ = metadata;
-  // }
+  void graphNode::unsetLabel() {
+    label_ = "";
+    labelIsSet_ = false;
+  }
 
   template <typename T>
   bool graphNode::hydrateAndCheckIfSet(const json& jsonNode, const char* itemKey, T& variable) {

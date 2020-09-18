@@ -8,7 +8,7 @@
 #include <nlohmann/json.hpp>
 
 #include "graph.hpp"
-#include "informedException.hpp"
+#include "cjgException.hpp"
 
 using json = nlohmann::json;
 
@@ -16,8 +16,8 @@ namespace nallj {
   class serializer {
   public:
     serializer();
-    void saveGraph(std::ofstream& output, graph& graphs);
-    void saveGraphs(std::ofstream& output, std::vector<graph>& graphs);
+    void saveGraph(std::ofstream& output, graph& graphs) const;
+    void saveGraphs(std::ofstream& output, std::vector<graph>& graphs) const;
   };
 };
 

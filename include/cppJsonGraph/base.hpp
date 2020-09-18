@@ -3,8 +3,6 @@
 
 // #include <deque>
 #include <map> // unordered_map
-#include <memory> // unique_ptr
-// #include <vector> // vector
 
 // Get rid of later.
 #include <iostream> // cout
@@ -16,13 +14,10 @@
 // #include "graphEdge.hpp"
 // #include "graphNode.hpp"
 
-#include "informedException.hpp"
+#include "cjgException.hpp"
 #include "utility.hpp"
 
 using json = nlohmann::json;
-
-// class graph;
-// using graphs_t = std::vector<std::shared_ptr<graph>>;
 
 namespace nallj {
   class base {
