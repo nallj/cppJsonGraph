@@ -4,6 +4,11 @@ namespace nallj {
   graphEdge::graphEdge() :
     directed_(true), idIsSet_(false), labelIsSet_(false), relationIsSet_(false) {}
 
+  graphEdge::graphEdge(const graphEdge& edge) :
+    directed_(edge.directed_), id_(edge.id_), idIsSet_(edge.idIsSet_), label_(edge.label_),
+    labelIsSet_(edge.labelIsSet_), relation_(edge.relation_), relationIsSet_(edge.relationIsSet_),
+    source_(edge.source_), target_(edge.target_) {}
+
   graphEdge::graphEdge(const json& jsonEdge) :
     base(jsonEdge), directed_(true), idIsSet_(false), labelIsSet_(false), relationIsSet_(false) {
 
@@ -21,7 +26,7 @@ namespace nallj {
   }
 
   graphEdge::graphEdge(std::string source, std::string target) :
-    source_(source), target_(target), idIsSet_(false), labelIsSet_(false), relationIsSet_(false) {}
+    idIsSet_(false), labelIsSet_(false), relationIsSet_(false), source_(source), target_(target) {}
 
   /* Accessors */
 

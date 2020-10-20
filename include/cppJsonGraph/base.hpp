@@ -3,6 +3,8 @@
 
 // #include <deque>
 #include <map> // unordered_map
+#include <memory> // shared_ptr
+#include <vector> // vector
 
 // Get rid of later.
 #include <iostream> // cout
@@ -11,14 +13,10 @@
 #include <nlohmann/json.hpp>
 // #include <nlohmann/json-schema.hpp>
 
-// #include "graphEdge.hpp"
-// #include "graphNode.hpp"
-
 #include "cjgException.hpp"
 #include "utility.hpp"
 
 using json = nlohmann::json;
-
 namespace nallj {
   class base {
     // Unrequired items.
@@ -30,13 +28,17 @@ namespace nallj {
 
   protected:
     base();
+    base(const base& node);
     base(const json&);
     // FIXME: Including graphEdge.hpp causes a circular reference that causes base to not be
     // identified as a class.
     // base(std::unordered_map<std::string, graphNode>, std::vector<graphEdge>);
     // TODO: Figure out the undefined reference.
-    template <typename T>
-    bool hydrateAndCheckIfSet2(const json& jsonGraph, const char* itemKey, T& variable);
+    // template <typename T>
+    // bool hydrateAndCheckIfSet2(const json& jsonGraph, const char* itemKey, T& variable);
+    // FIXME: More undefined symbols. :/
+    // template <typename T, typename TValue>
+    // std::vector<TValue> getPtrMapValues(const std::unordered_map<T, std::shared_ptr<TValue>>& sourceMap) const;
 
   public:
     // Accessors

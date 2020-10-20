@@ -7,58 +7,12 @@
 // Remove later.
 #include <iostream> // cout
 #include <tuple>
-// #include <utility> // pair
 
 #include <nlohmann/json.hpp>
 
 #include "base.hpp"
 #include "cjgException.hpp"
-
-//class base;
-
-/*
-"edges": {
-    "type": [
-    "array"
-    ],
-    "items": {
-    "type": "object",
-    "additionalProperties": false,
-    "properties": {
-        "id": {
-        "type": "string"
-        },
-        "source": {
-        "type": "string"
-        },
-        "target": {
-        "type": "string"
-        },
-        "relation": {
-        "type": "string"
-        },
-        "directed": {
-        "type": [
-            "boolean"
-        ],
-        "default": true
-        },
-        "label": {
-        "type": "string"
-        },
-        "metadata": {
-        "type": [
-            "object"
-        ]
-        }
-    },
-    "required": [
-        "source",
-        "target"
-    ]
-    }
-}
-*/
+#include "graph.hpp"
 
 using json = nlohmann::json;
 
@@ -68,17 +22,16 @@ namespace nallj {
       DIRECTED, ID, LABEL, RELATION, SOURCE, TARGET
     };
 
-    // Required items.
+    // Required items
     std::string source_;
     std::string target_;
 
-    // Defaulted items.
+    // Defaulted items
     bool directed_; // Defaults to true.
 
-    // Unrequired items.
+    // Unrequired items
     std::string id_;
     std::string label_;
-    // std::unordered_map<std::string, std::string> metadata_;
     std::string relation_;
 
     bool idIsSet_;
@@ -89,6 +42,7 @@ namespace nallj {
 
   public:
     graphEdge();
+    graphEdge(const graphEdge& edge);
     graphEdge(const json& jsonEdge);
     graphEdge(std::string source, std::string target);
 

@@ -1,21 +1,30 @@
 #include <cppJsonGraph/base.hpp>
-
 namespace nallj {
   base::base() :
-    metadataIsSet_(false) { }
+    metadataIsSet_(false) {}
+
+  base::base(const base& entity) :
+    metadata_(entity.metadata_), metadataIsSet_(entity.metadataIsSet_) {}
 
   base::base(const json& jsonObj) {
     hydrateMetadata(jsonObj);
   }
-
-  // base::base(std::unordered_map<std::string, graphNode>, std::vector<graphEdge>) :
-  //   metadataIsSet_(false) { }
 
   /* Accessors */
 
   std::unordered_map<std::string, std::string> base::getMetadata() const {
     return metadata_;
   }
+
+  // template <typename T, typename TValue>
+  // std::vector<TValue> base::getPtrMapValues(const std::unordered_map<T, std::shared_ptr<TValue>>& sourceMap) const {
+  //   std::vector<TValue> values;
+  //   for (const auto& entry : sourceMap) {
+  //     const auto ptr = entry.second.get();
+  //     values.push_back(*ptr);
+  //   }
+  //   return values;
+  // }
 
   bool base::getMetadataIsSet() const {
     return metadataIsSet_;
@@ -64,16 +73,16 @@ namespace nallj {
 
   /* Methods */
 
-  template <typename T>
-  bool base::hydrateAndCheckIfSet2(const json& jsonGraph, const char* itemKey, T& variable) {
-    if (jsonGraph.count(itemKey) == 1) {
-      auto item = jsonGraph[itemKey];
-      auto value = item.get<T>();
-      variable = value;
-      return true;
-    }
-    return false;
-  }
+  // template <typename T>
+  // bool base::hydrateAndCheckIfSet2(const json& jsonGraph, const char* itemKey, T& variable) {
+  //   if (jsonGraph.count(itemKey) == 1) {
+  //     auto item = jsonGraph[itemKey];
+  //     auto value = item.get<T>();
+  //     variable = value;
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   void base::hydrateMetadata(const json& jsonObj) {
     const auto metadataKey = "metadata";
